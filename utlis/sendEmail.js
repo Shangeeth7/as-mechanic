@@ -10,8 +10,8 @@ module.exports = async (user, mailType, admin) => {
       port: 587,
       secure: true,
       auth: {
-        user: "shangeeth24@gmail.com",
-        pass: "axkrzkfrxexrbfjk",
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
 
