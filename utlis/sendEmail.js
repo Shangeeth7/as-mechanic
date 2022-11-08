@@ -28,7 +28,7 @@ module.exports = async (user, mailType, admin) => {
       emailContent = `<div><h1>Please click on the below link to verify your email address</h1> <a href="http://localhost:3000/verifyemail/${encryptedToken}">${encryptedToken}</a>  </div>`;
 
       mailOptions = {
-        from: "shangeeth24@gmail.com",
+        from: process.env.EMAIL,
         to: user.email,
         subject: "Verify Email For MERN Auth",
         html: emailContent,
@@ -40,7 +40,7 @@ module.exports = async (user, mailType, admin) => {
       </div>`;
 
       mailOptions = {
-        from: "shangeeth24@gmail.com",
+        from: process.env.EMAIL,
         to: user.email,
         subject: "Welcome to our Service",
         html: emailContent,
@@ -56,7 +56,7 @@ module.exports = async (user, mailType, admin) => {
         </div>`;
 
       mailOptions = {
-        from: "shangeeth24@gmail.com",
+        from: process.env.EMAIL,
         to: user.email,
         subject: "Password Reset Successfull",
         html: emailContent,
@@ -65,7 +65,7 @@ module.exports = async (user, mailType, admin) => {
       emailContent = `<div><h1>Please click on the below link to reset your password</h1> <a href="http://localhost:3000/resetpassword/${encryptedToken}">${encryptedToken}</a>  </div>`;
 
       mailOptions = {
-        from: "shangeeth24@gmail.com",
+        from: process.env.EMAIL,
         to: user.email,
         subject: "Reset Password",
         html: emailContent,
