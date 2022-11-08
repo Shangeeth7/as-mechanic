@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9099"
+  "proxy": "https://bikemechanic.herokuapp.com"
 }
