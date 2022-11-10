@@ -3,6 +3,9 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Button, Form, Input, PageHeader, Divider } from "antd";
+import { PasswordInput } from "antd-password-input-strength";
+
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
@@ -29,38 +32,66 @@ function ResetPassword() {
   };
 
   return (
-    <div className="authentication">
-      <div className="authentication-form card p-3 ">
-        <h1 className="card-title">Change your Password</h1>
-        <br />
-        <input
-          type="password"
-          className="py-1  px-3 border-2 border-secondary focus:outline-none w-full"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-        />
-        <br />
-        <input
-          type="password"
-          className="py-1 px-3  border-2 border-secondary focus:outline-none w-full"
-          placeholder="confirm password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          value={confirmpassword}
-        />
-        <br />
+    <div>
+      <PageHeader
+        className="site-page-header"
+        title="MSC"
+        subTitle="Motorcycle Servicing Company"
+        extra={[
+          <a>
+            <h4 className="about-contact text-white">About</h4>
+          </a>,
 
-        <div className="flex justify-between items-end">
-          {password.length === 6 && password === confirmpassword ? (
-            <button
-              className="primary-button my-2 full-width-button"
-              onClick={resetPassword}
-            >
-              RESET PASSWORD
-            </button>
+          <Divider dashed type="vertical" />,
+          <a>
+            <h4 className="about-contact text-white">Contact</h4>
+          </a>,
+        ]}
+      />
+
+      <div className="authentication">
+        <div className="authentication-form card p-3 ">
+          <h1 className="text-white">
+            Reset <span className="bavckss">Password</span>{" "}
+          </h1>
+
+          <PasswordInput
+            rules={[{ required: true }, { min: 6 }]}
+            // type="password"
+            className="py-1  px-3 border-2 border-secondary focus:outline-none w-full"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+          {password.length > 0 && password.length < 6 ? (
+            <span className="foredddr">
+              'password' should contain min 6 characters
+            </span>
           ) : (
-            "Enter your Passwords"
+            <span></span>
           )}
+          <br />
+          <Input.Password
+            type="password"
+            className="py-1 px-3  border-2 border-secondary focus:outline-none w-full"
+            placeholder="confirm password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmpassword}
+          />
+          <br />
+
+          <div className="flex justify-between items-end">
+            {password.length === 6 && password === confirmpassword ? (
+              <Button
+                className="buttonss my-2 full-width-button"
+                onClick={resetPassword}
+              >
+                RESET PASSWORD
+              </Button>
+            ) : (
+              <span className="text-white">Fill the Required Feilds</span>
+            )}
+          </div>
         </div>
       </div>
     </div>

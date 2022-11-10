@@ -17,6 +17,8 @@ import Appointments from "./pages/Appointments";
 import DoctorAppointments from "./pages/Doctor/DoctorAppointments";
 import VerifyEmail from "./pages/VerifyEmail";
 import ResetPassword from "./pages/ResetPassword";
+import BackgroundAnimate from "./BackgroundAnimate";
+import Carousels from "./Carousel/Carousel";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -34,6 +36,15 @@ function App() {
           element={
             <PublicRoute>
               <Login />
+              <BackgroundAnimate />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/ccrr"
+          element={
+            <PublicRoute>
+              <Carousels />
             </PublicRoute>
           }
         />
@@ -42,6 +53,7 @@ function App() {
           element={
             <PublicRoute>
               <Register />
+              <BackgroundAnimate />
             </PublicRoute>
           }
         />
@@ -57,6 +69,8 @@ function App() {
           path="/resetpassword/:token"
           element={
             <PublicRoute>
+              <BackgroundAnimate />
+
               <ResetPassword />
             </PublicRoute>
           }

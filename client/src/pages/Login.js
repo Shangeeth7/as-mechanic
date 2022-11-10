@@ -1,16 +1,23 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, PageHeader, Divider } from "antd";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { hideLoading, showLoading } from "../redux/alertsSlice";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 function Login() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const content24 = (
+    <div>
+      <p>What actually we do </p>
+      <p>Achievements and Awards</p>
+    </div>
+  );
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
@@ -47,66 +54,105 @@ function Login() {
     }
   };
   return (
-    <div className="authentication">
-      {!showForgotPassword && (
-        <div className="authentication-form card p-3">
-          <h1 className="card-title">Welcome Back</h1>
-          <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item label="Email" name="email">
-              <Input placeholder="Email" />
-            </Form.Item>
-            <Form.Item label="Password" name="password">
-              <Input placeholder="Password" type="password" />
-            </Form.Item>
+    <div>
+      <PageHeader
+        className="site-page-header"
+        title="MSC"
+        subTitle="Motorcycle Servicing Company"
+        extra={[
+          <a>
+            <h4 className="about-contact text-white">About</h4>
+          </a>,
 
-            <Button
-              className="primary-button my-2 full-width-button"
-              htmlType="submit"
-            >
-              LOGIN
-            </Button>
+          <Divider dashed type="vertical" />,
+          <a>
+            <h4 className="about-contact text-white">Contact</h4>
+          </a>,
+        ]}
+      />
+      <div className="authentication">
+        {!showForgotPassword && (
+          <div className="authentication-form card p-3">
+            <div>
+              <h1 className="text-white">
+                Welcome <span className="bavckss">Back</span>
+              </h1>
+            </div>
+            <Form layout="vertical" onFinish={onFinish}>
+              <Form.Item
+                label={<label style={{ color: "white" }}>E-mail</label>}
+                name="email"
+              >
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Email"
+                />
+              </Form.Item>
+              <Form.Item
+                label={<label style={{ color: "white" }}>Password</label>}
+                name="password"
+              >
+                <Input.Password
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  placeholder="Password"
+                  type="password"
+                />
+              </Form.Item>
 
-            <Link to="/register" className="anchor mt-2">
-              CLICK HERE TO REGISTER
-            </Link>
-          </Form>
-          <h6
-            className="cursor-pointer underline "
-            onClick={() => setShowForgotPassword(true)}
-          >
-            Forgot Password
-          </h6>
-        </div>
-      )}
-
-      {showForgotPassword && (
-        <div className="authentication-form card p-3 ">
-          <h1 className="card-title">Change your Password</h1>
-          <br />
-          <input
-            type="text"
-            className="py-1  px-3 border-2 border-secondary focus:outline-none w-full"
-            placeholder="e-mail"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-
-          <div className="flex justify-between items-end">
-            <button
-              className="primary-button my-2 full-width-button"
-              onClick={sendResetPasswordLink}
-            >
-              Send Re-set password link
-            </button>
+              <Button
+                className="buttonss my-2 full-width-button"
+                htmlType="submit"
+              >
+                LOGIN
+              </Button>
+            </Form>
+            <div className="link-anchor">
+              <Link to="/register" className="anchor">
+                New ? <span className="bavckss">REGISTER</span>
+              </Link>
+              <h6
+                className="anchor"
+                onClick={() => setShowForgotPassword(true)}
+              >
+                Forgot Password
+              </h6>
+            </div>
           </div>
-          <h6
-            onClick={() => setShowForgotPassword(false)}
-            className="cursor-pointer underline "
-          >
-            Click Here To Login
-          </h6>
-        </div>
-      )}
+        )}
+
+        {showForgotPassword && (
+          <div className="authentication-form card p-3 ">
+            <p className="reset-PASSWORDs text-white">
+              Enter your <span className="bavckss">E-mail</span>
+            </p>
+            <br />
+
+            <Input
+              // style={{
+              //   width: "95%",
+              // }}
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              type="email"
+              className="site-form-item-icon"
+              placeholder="e-mail"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+
+            <div className="buttonnsdiv2">
+              <Button
+                className="buttonns2 my-2 full-width-button"
+                onClick={sendResetPasswordLink}
+              >
+                Send Re-set password link
+              </Button>
+            </div>
+            <h6 onClick={() => setShowForgotPassword(false)} className="anchor">
+              Click Here - <span className="bavckss">LOGIN</span>
+            </h6>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,9 @@
+.carosuel-images {
+  height: 70vh;
+  color: red;
+  line-height: 160px;
+  text-align: center;
+  /* background: #364d79; */
+  background-image: url
+    ("https://www.credr.com/blog/wp-content/uploads/2022/02/service-image.jpg");
+}

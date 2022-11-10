@@ -1,14 +1,24 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, PageHeader, Divider } from "antd";
+import { PasswordInput } from "antd-password-input-strength";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../redux/alertsSlice";
+import { LockOutlined, UserOutlined, IdcardOutlined } from "@ant-design/icons";
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const validateMessages = {
+    required: "${label} is required!",
+    types: {
+      email: "${label} is not a valid email!",
+      number: "${label} is not a valid number!",
+      required: "${label} is required!",
+    },
+  };
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
@@ -27,31 +37,69 @@ function Register() {
   };
 
   return (
-    <div className="authentication">
-      <div className="authentication-form card p-3">
-        <h1 className="card-title">Nice To Meet U</h1>
-        <Form layout="vertical" onFinish={onFinish}>
-          <Form.Item label="Name" name="name">
-            <Input placeholder="Name" />
-          </Form.Item>
-          <Form.Item label="Email" name="email">
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item label="Password" name="password">
-            <Input placeholder="Password" type="password" />
-          </Form.Item>
+    <div>
+      <PageHeader
+        className="site-page-header"
+        title="MSC"
+        subTitle="Motorcycle Servicing Company"
+        extra={[
+          <a>
+            <h4 className="about-contact text-white">About</h4>
+          </a>,
 
-          <Button
-            className="primary-button my-2 full-width-button"
-            htmlType="submit"
-          >
-            REGISTER
-          </Button>
+          <Divider dashed type="vertical" />,
+          <a>
+            <h4 className="about-contact text-white">Contact</h4>
+          </a>,
+        ]}
+      />
+      <div className="authentication">
+        <div className="authentication-form card p-3">
+          <h1 className="text-white">
+            Nice To Meet <span className="bavckss">Ya</span>{" "}
+          </h1>
+          <Form layout="vertical" onFinish={onFinish}>
+            <Form.Item
+              rules={[{ required: true }, { min: 2, max: 16 }]}
+              label={<label style={{ color: "white" }}>Name</label>}
+              name="name"
+            >
+              <Input className="height-inputts" placeholder="Name" />
+            </Form.Item>
+            <Form.Item
+              label={<label style={{ color: "white" }}>E-mail</label>}
+              rules={[{ type: "email" }, { required: true }]}
+              name="email"
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Email"
+              />
+            </Form.Item>
+            <Form.Item
+              label={<label style={{ color: "white" }}>Password</label>}
+              rules={[{ min: 6 }, { required: true }]}
+              name="password"
+            >
+              <PasswordInput
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Password"
+                type="password"
+              />
+            </Form.Item>
 
-          <Link to="/login" className="anchor mt-2">
-            CLICK HERE TO LOGIN
-          </Link>
-        </Form>
+            <Button
+              className="buttonss my-2 full-width-button"
+              htmlType="submit"
+            >
+              REGISTER
+            </Button>
+
+            <Link to="/login" className="anchor mt-2">
+              Already a user ? <span className="bavckss">LOGIN</span>
+            </Link>
+          </Form>
+        </div>
       </div>
     </div>
   );
