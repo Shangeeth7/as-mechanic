@@ -24,28 +24,7 @@ module.exports = async (user, mailType, admin) => {
     });
     await token.save();
     let mailOptions, emailContent;
-    if (mailType === "verifyemail") {
-      emailContent = `<div><h1>Please click on the below link to verify your email address</h1> <a href="https://bikemechanic.herokuapp.com/verifyemail/${encryptedToken}">${encryptedToken}</a>  </div>`;
-
-      mailOptions = {
-        from: process.env.EMAIL,
-        to: user.email,
-        subject: "Verify Email For MERN Auth",
-        html: emailContent,
-      };
-    } else if (mailType === "afterverify") {
-      emailContent = `<div><h1>Hello ${user.name}</h1>
-      <p> Welcome to our Online Motorcycle Booking APPLICATION
-      </p>
-      </div>`;
-
-      mailOptions = {
-        from: process.env.EMAIL,
-        to: user.email,
-        subject: "Welcome to our Service",
-        html: emailContent,
-      };
-    } else if (mailType === "afterreset") {
+    if (mailType === "afterreset") {
       emailContent = `<div>
         <h1>Hello ${user.name}</h1>
          <p> Password Reset successfull</p>
@@ -61,8 +40,23 @@ module.exports = async (user, mailType, admin) => {
         subject: "Password Reset Successfull",
         html: emailContent,
       };
+    } else if (mailType === "message") {
+      emailContent = `<div>
+      <h2> Details of the user/viewer </h2>
+        <h3>Name : ${user.name}</h3>
+          <h3>E-mail : ${user.email} </h3>
+          <h3>Phone Number : ${user.phoneNumber} </h3>
+          <h3>Message : ${user.message} </h3>
+        </div>`;
+
+      mailOptions = {
+        from: process.env.EMAIL,
+        to: process.env.EMAIL,
+        subject: "Message from user/viewer",
+        html: emailContent,
+      };
     } else {
-      emailContent = `<div><h1>Please click on the below link to reset your password</h1> <a href="https://bikemechanic.herokuapp.com/resetpassword/${encryptedToken}">${encryptedToken}</a>  </div>`;
+      emailContent = `<div><h1>Please click on the below link to reset your password</h1> <a href="http://localhost:3000/resetpassword/${encryptedToken}">${encryptedToken}</a> </div>`;
 
       mailOptions = {
         from: process.env.EMAIL,

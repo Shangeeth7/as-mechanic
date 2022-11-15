@@ -22,7 +22,7 @@
   color: white;
 }
 .sidebar {
-  background-color: #005555;
+  background-color: #4e54c8;
   border-radius: 5px;
   box-shadow: 0 0 2px gray;
   margin-right: 20px;
@@ -64,7 +64,7 @@
 }
 
 .menu-item a {
-  color: rgba(255, 255, 255, 0.727);
+  color: white;
   text-decoration: none;
   font-size: 18px;
   padding: 0 10px;
@@ -78,7 +78,7 @@
 
 .active-menu-item {
   color: white;
-  background-color: #013737;
+  background-color: #f99f38;
   padding: 5px;
   border-radius: 5px;
 }
@@ -95,7 +95,7 @@
   padding-bottom: -10px !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .menu {
     padding: 0 5px;
   }
@@ -124,7 +124,11 @@
   margin: 0;
   padding: 0;
   background: #4e54c8;
-  /* background: #72cdda; */
+
+  /* background-size: contain;
+
+  background-image: url("../public/images/home-page-images/back.jpg"); */
+
   overflow: hidden;
   z-index: -1;
 }
@@ -232,4 +236,42 @@
 
 .reset-PASSWORDs {
   font-size: 40px;
+}
+
+.content {
+  max-width: 84%;
+}
+
+@media only screen and (max-width: 600px) {
+  .content {
+    max-width: 70%;
+  }
+  .sidebar {
+    background-color: #4e54c8;
+    border-radius: 5px;
+    box-shadow: 0 0 2px grey;
+    margin-right: 20px;
+    min-height: 100%;
+    padding: 10px;
+    max-width: 12vh;
+  }
+  .menu-item a {
+    font-size: 8px !important;
+  }
+  .logo {
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+  }
+  .role {
+    color: white;
+    font-size: 10px;
+    margin-top: -20px;
+  }
+}
+
+a:not([href]):not([class]),
+a:not([href]):not([class]):hover {
+  color: #f99f38;
+  text-decoration: none;
 }

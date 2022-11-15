@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
+const MessageUs = require("../models/sendUsMessageModel");
 const Token = require("../models/tokenModel");
 const sendEmail = require("../utlis/sendEmail");
-const Doctor = require("../models/doctorModel");
+const sendVerify = require("../utlis/sendVerifyEmail");
+const Mechanic = require("../models/mechanicModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -24,7 +26,7 @@ router.post("/register", async (req, res) => {
     req.body.password = hashedPassword;
     const newuser = new User(req.body);
     const result = await newuser.save();
-    await sendEmail(result, "verifyemail");
+    await sendVerify(result, "verifyemail");
     res
       .status(200)
       .send({ message: "User created successfully", success: true });
@@ -91,31 +93,31 @@ router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/apply-doctor-account", authMiddleware, async (req, res) => {
+router.post("/apply-mechanic-account", authMiddleware, async (req, res) => {
   try {
-    const newdoctor = new Doctor({ ...req.body, status: "pending" });
-    await newdoctor.save();
+    const newmechanic = new Mechanic({ ...req.body, status: "pending" });
+    await newmechanic.save();
     const adminUser = await User.findOne({ isAdmin: true });
 
     const unseenNotifications = adminUser.unseenNotifications;
     unseenNotifications.push({
-      type: "new-doctor-request",
-      message: `${newdoctor.firstName} ${newdoctor.lastName} has applied for a doctor account`,
+      type: "new-mechanic-request",
+      message: `${newmechanic.firstName} ${newmechanic.lastName} has applied for a Mechanic account`,
       data: {
-        doctorId: newdoctor._id,
-        name: newdoctor.firstName + " " + newdoctor.lastName,
+        mechanicId: newmechanic._id,
+        name: newmechanic.firstName + " " + newmechanic.lastName,
       },
       onClickPath: "/admin/mechaniclist",
     });
     await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
     res.status(200).send({
       success: true,
-      message: "Doctor account applied successfully",
+      message: "Mechanic account applied successfully",
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error applying doctor account",
+      message: "Error applying Mechanic account",
       success: false,
       error,
     });
@@ -142,7 +144,7 @@ router.post(
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        message: "Error applying doctor account",
+        message: "Error applying Mechanic account",
         success: false,
         error,
       });
@@ -165,25 +167,25 @@ router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error applying doctor account",
+      message: "Error applying Mechanic account",
       success: false,
       error,
     });
   }
 });
 
-router.get("/get-all-approved-doctors", authMiddleware, async (req, res) => {
+router.get("/get-all-approved-mechanics", authMiddleware, async (req, res) => {
   try {
-    const doctors = await Doctor.find({ status: "approved" });
+    const mechanics = await Mechanic.find({ status: "approved" });
     res.status(200).send({
-      message: "Doctors fetched successfully",
+      message: "Mechanics fetched successfully",
       success: true,
-      data: doctors,
+      data: mechanics,
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error applying doctor account",
+      message: "Error applying Mechanic account",
       success: false,
       error,
     });
@@ -197,8 +199,8 @@ router.post("/book-appointment", authMiddleware, async (req, res) => {
     req.body.time = moment(req.body.time, "HH:mm").toISOString();
     const newAppointment = new Appointment(req.body);
     await newAppointment.save();
-    //pushing notification to doctor based on his userid
-    const user = await User.findOne({ _id: req.body.doctorInfo.userId });
+
+    const user = await User.findOne({ _id: req.body.mechanicInfo.userId });
     user.unseenNotifications.push({
       type: "new-appointment-request",
       message: `A new appointment request has been made by ${req.body.userInfo.name}`,
@@ -226,9 +228,9 @@ router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
       .subtract(1, "hours")
       .toISOString();
     const toTime = moment(req.body.time, "HH:mm").add(1, "hours").toISOString();
-    const doctorId = req.body.doctorId;
+    const mechanicId = req.body.mechanicId;
     const appointments = await Appointment.find({
-      doctorId,
+      mechanicId,
       date,
       time: { $gte: fromTime, $lte: toTime },
     });
@@ -272,12 +274,19 @@ router.get("/get-appointments-by-user-id", authMiddleware, async (req, res) => {
 });
 router.post("/send-password-reset-link", async (req, res) => {
   try {
-    const result = await User.findOne({ email: req.body.email });
-    await sendEmail(result, "resetpassword");
-    res.send({
-      success: true,
-      message: "Password reset link sent to your email successfully",
-    });
+    const userExists = await User.findOne({ email: req.body.email });
+    if (userExists) {
+      const result = await User.findOne({ email: req.body.email });
+      await sendEmail(result, "resetpassword");
+      res.send({
+        success: true,
+        message: "Password reset link sent to your email successfully",
+      });
+    } else {
+      return res
+        .status(404)
+        .send({ message: "Invalid crediatials", success: false });
+    }
   } catch (error) {
     res.status(500).send(error);
   }
@@ -293,12 +302,13 @@ router.post("/resetpassword", async (req, res) => {
       await User.findByIdAndUpdate(tokenData.userid, {
         password: hashedPassword,
       });
-      await Token.findOneAndDelete({ token: req.body.token });
       res.send({ success: true, message: "Password reset successfull" });
       const data = tokenData.userid;
       const admin = await User.findOne({ isAdmin: true });
       const result = await User.findById(data);
       await sendEmail(result, "afterreset", admin);
+      const idData = tokenData.userid;
+      await Token.findOneAndDelete({ _id: tokenData._id }, { userid: idData });
     } else {
       res.send({ success: false, message: "Invalid token" });
     }
@@ -321,7 +331,7 @@ router.post("/verifyemail", async (req, res) => {
       await Token.findOneAndDelete({ token: req.body.token });
       res.send({ success: true, message: "Email Verified Successlly" });
       const result = await User.findById(data);
-      await sendEmail(result, "afterverify");
+      await sendVerify(result, "afterverify");
     } else {
       res.send({ success: false, message: "Invalid token" });
       console.log(error);
@@ -329,6 +339,20 @@ router.post("/verifyemail", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
     console.log(error);
+  }
+});
+
+router.post("/message", async (req, res) => {
+  try {
+    const newuser = new MessageUs(req.body);
+    const result = await newuser.save();
+    await sendEmail(result, "message");
+    res.status(200).send({ message: "Message Sent", success: true });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Unable to send message", success: false, error });
   }
 });
 module.exports = router;

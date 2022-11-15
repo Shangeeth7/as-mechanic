@@ -11,14 +11,7 @@ import { LockOutlined, UserOutlined, IdcardOutlined } from "@ant-design/icons";
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const validateMessages = {
-    required: "${label} is required!",
-    types: {
-      email: "${label} is not a valid email!",
-      number: "${label} is not a valid number!",
-      required: "${label} is required!",
-    },
-  };
+
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
@@ -43,24 +36,24 @@ function Register() {
         title="MSC"
         subTitle="Motorcycle Servicing Company"
         extra={[
-          <a>
+          <Link to="/about-us">
             <h4 className="about-contact text-white">About</h4>
-          </a>,
+          </Link>,
 
           <Divider dashed type="vertical" />,
-          <a>
-            <h4 className="about-contact text-white">Contact</h4>
-          </a>,
+          <Link to="/message">
+            <h4 className="about-contact text-white">Get in Touch</h4>
+          </Link>,
         ]}
       />
       <div className="authentication">
         <div className="authentication-form card p-3">
           <h1 className="text-white">
-            Nice To Meet <span className="bavckss">Ya</span>{" "}
+            Nice To Meet <span className="bavckss">Ya</span>
           </h1>
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
-              rules={[{ required: true }, { min: 2, max: 16 }]}
+              rules={[{ required: true }, { min: 2, max: 24 }]}
               label={<label style={{ color: "white" }}>Name</label>}
               name="name"
             >

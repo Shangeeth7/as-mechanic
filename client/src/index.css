@@ -82,7 +82,7 @@ p {
 }
 
 .anchor {
-  color: whitesmoke !important;
+  color: darkgrey !important;
   text-decoration: underline;
   cursor: pointer;
   font-size: 16px !important;
@@ -164,7 +164,8 @@ p {
 
 .ant-page-header-heading-sub-title {
   margin-right: 12px;
-  color: grey;
+  color: darkgrey;
+  opacity: 2;
   font-size: 14px;
   line-height: 1.5715;
   overflow: hidden;
@@ -213,11 +214,15 @@ p {
 
 .ant-divider-dashed {
   background: transparent;
-  border: dashed orange;
+  border: dashed #f99f38;
   border-width: 1px 0 0;
 }
 
 .foredddr {
   color: red;
   font-size: x-small;
+}
+
+.first-letter {
+  color: grey;
 }

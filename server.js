@@ -5,12 +5,12 @@ const dbConfig = require("./config/dbConfig");
 app.use(express.json());
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
-const doctorRoute = require("./routes/doctorsRoute");
+const mechanicRoute = require("./routes/mechanicsRoute");
 const path = require("path");
 
 app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
-app.use("/api/doctor", doctorRoute);
+app.use("/api/mechanic", mechanicRoute);
 
 if (process.env.NODE_ENV === "production") {
   app.use("/", express.static("client/build"));
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client/build/index.html"));
   });
 }
-const port = process.env.PORT || 9099;
+const port = process.env.PORT || 9199;
 
 app.get("/", (req, res) => res.send("Hello World!"));
 app.listen(port, () => console.log(`Node Express Server Started at ${port}!`));

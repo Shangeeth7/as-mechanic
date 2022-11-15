@@ -73,10 +73,10 @@ function MechanicForm({ onFinish, initivalValues }) {
             rules={[{ required: true, message: "Select Vechicle type" }]}
           >
             <Select placeholder="Select a Vechicle">
-              <Option value="Zhejiang">Scooter / Gearless</Option>
-              <Option value="Jiangsu">Standard / Normal</Option>
-              <Option value="Zhejiang">Sports Bike</Option>
-              <Option value="Jiangsu">Cruiser </Option>
+              <Option value="Scooter/Gearless">Scooter/Gearless</Option>
+              <Option value="Standard/Normal">Standard/Normal</Option>
+              <Option value="Sports Bike">Sports Bike</Option>
+              <Option value="Cruiser">Cruiser </Option>
             </Select>
           </Form.Item>
         </Col>
@@ -93,7 +93,7 @@ function MechanicForm({ onFinish, initivalValues }) {
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Expected Salary"
+            label="Expected Salary (LPA)"
             name="expectedSalary"
             rules={[{ required: true }]}
           >
@@ -103,7 +103,7 @@ function MechanicForm({ onFinish, initivalValues }) {
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Timings"
+            label="Timings (may vary)"
             name="timings"
             rules={[{ required: true }]}
           >

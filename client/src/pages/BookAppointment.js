@@ -7,6 +7,20 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import booknow from "./others-images/booknow.jpg";
+function range(start, end) {
+  const resultTimeDis = [];
+  for (let i = start; i < end; i++) {
+    resultTimeDis.push(i);
+  }
+  return resultTimeDis;
+}
+
+function disabledHours() {
+  const hours = range(0, 60);
+  hours.splice(7, 14);
+  return hours;
+}
 
 function BookAppointment() {
   const [isAvailable, setIsAvailable] = useState(false);
@@ -14,17 +28,17 @@ function BookAppointment() {
   const [date, setDate] = useState();
   const [time, setTime] = useState();
   const { user } = useSelector((state) => state.user);
-  const [doctor, setDoctor] = useState(null);
+  const [mechanic, setMechanic] = useState(null);
   const params = useParams();
   const dispatch = useDispatch();
 
-  const getDoctorData = async () => {
+  const getMechanicData = async () => {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "/api/doctor/get-doctor-info-by-id",
+        "/api/mechanic/get-mechanic-info-by-id",
         {
-          doctorId: params.doctorId,
+          mechanicId: params.mechanicId,
         },
         {
           headers: {
@@ -35,7 +49,7 @@ function BookAppointment() {
 
       dispatch(hideLoading());
       if (response.data.success) {
-        setDoctor(response.data.data);
+        setMechanic(response.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -48,7 +62,7 @@ function BookAppointment() {
       const response = await axios.post(
         "/api/user/check-booking-avilability",
         {
-          doctorId: params.doctorId,
+          mechanicId: params.mechanicId,
           date: date,
           time: time,
         },
@@ -77,9 +91,9 @@ function BookAppointment() {
       const response = await axios.post(
         "/api/user/book-appointment",
         {
-          doctorId: params.doctorId,
+          mechanicId: params.mechanicId,
           userId: user._id,
-          doctorInfo: doctor,
+          mechanicInfo: mechanic,
           userInfo: user,
           date: date,
           time: time,
@@ -103,44 +117,43 @@ function BookAppointment() {
   };
 
   useEffect(() => {
-    getDoctorData();
+    getMechanicData();
   }, []);
   return (
     <Layout>
-      {doctor && (
+      {mechanic && (
         <div>
           <h1 className="page-title">
-            {doctor.firstName} {doctor.lastName}
+            Specialized in :<b> {mechanic.specialization}</b>
           </h1>
           <hr />
           <Row gutter={20} className="mt-5" align="middle">
             <Col span={8} sm={24} xs={24} lg={8}>
-              <img
-                src="https://thumbs.dreamstime.com/b/finger-press-book-now-button-booking-reservation-icon-online-149789867.jpg"
-                alt=""
-                width="100%"
-                height="400"
-              />
+              <img src={booknow} alt="book-now" width="100%" height="400" />
             </Col>
             <Col span={8} sm={24} xs={24} lg={8}>
               <h1 className="normal-text">
-                <b>Timings :</b> {doctor.timings[0]} - {doctor.timings[1]}
+                <b>Name :</b> {mechanic.firstName} {mechanic.lastName}
               </h1>
               <p>
+                {/* <b>Timings :</b> {mechanic.timings[0]} - {mechanic.timings[1]} */}
+                <b>Timings :</b> 07:00 - 10:00
+              </p>
+              <p>
                 <b>Phone Number : </b>
-                {doctor.phoneNumber}
+                {mechanic.phoneNumber}
               </p>
+
               <p>
-                <b>Address : </b>
-                {doctor.address}
-              </p>
-              <p>
-                <b>Expected Salary : </b>
-                {doctor.expectedSalary}
+                <b>Experience : </b>
+                {mechanic.experience} years
               </p>
 
               <div className="d-flex flex-column pt-2 mt-2">
                 <DatePicker
+                  disabledDate={(current) => {
+                    return current && current < moment().endOf("day");
+                  }}
                   format="DD-MM-YYYY"
                   onChange={(value) => {
                     setDate(moment(value).format("DD-MM-YYYY"));
@@ -148,6 +161,8 @@ function BookAppointment() {
                   }}
                 />
                 <TimePicker
+                  disabledHours={disabledHours}
+                  placeholder="Time"
                   format="HH:mm"
                   className="mt-3"
                   onChange={(value) => {

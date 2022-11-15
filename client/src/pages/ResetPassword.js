@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Form, Input, PageHeader, Divider } from "antd";
@@ -38,14 +38,14 @@ function ResetPassword() {
         title="MSC"
         subTitle="Motorcycle Servicing Company"
         extra={[
-          <a>
+          <Link to="/about-us">
             <h4 className="about-contact text-white">About</h4>
-          </a>,
+          </Link>,
 
           <Divider dashed type="vertical" />,
-          <a>
-            <h4 className="about-contact text-white">Contact</h4>
-          </a>,
+          <Link to="/message">
+            <h4 className="about-contact text-white">Get in Touch</h4>
+          </Link>,
         ]}
       />
 
@@ -81,7 +81,7 @@ function ResetPassword() {
           <br />
 
           <div className="flex justify-between items-end">
-            {password.length === 6 && password === confirmpassword ? (
+            {password === confirmpassword ? (
               <Button
                 className="buttonss my-2 full-width-button"
                 onClick={resetPassword}

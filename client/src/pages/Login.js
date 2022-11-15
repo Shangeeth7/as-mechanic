@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { hideLoading, showLoading } from "../redux/alertsSlice";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import BackgroundAnimate from "../BackgroundAnimate";
 
 function Login() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -60,14 +61,14 @@ function Login() {
         title="MSC"
         subTitle="Motorcycle Servicing Company"
         extra={[
-          <a>
+          <Link to="/about-us">
             <h4 className="about-contact text-white">About</h4>
-          </a>,
+          </Link>,
 
           <Divider dashed type="vertical" />,
-          <a>
-            <h4 className="about-contact text-white">Contact</h4>
-          </a>,
+          <Link to="/message">
+            <h4 className="about-contact text-white">Get in Touch</h4>
+          </Link>,
         ]}
       />
       <div className="authentication">

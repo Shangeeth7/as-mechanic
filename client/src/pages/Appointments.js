@@ -39,14 +39,14 @@ function Appointments() {
       dataIndex: "name",
       render: (text, record) => (
         <span>
-          {record.doctorInfo.firstName} {record.doctorInfo.lastName}
+          {record.mechanicInfo.firstName} {record.mechanicInfo.lastName}
         </span>
       ),
     },
     {
       title: "Phone",
       dataIndex: "phoneNumber",
-      render: (text, record) => <span>{record.doctorInfo.phoneNumber}</span>,
+      render: (text, record) => <span>{record.mechanicInfo.phoneNumber}</span>,
     },
     {
       title: "Date & Time",

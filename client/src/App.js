@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Toaster } from "react-hot-toast";
@@ -7,18 +7,20 @@ import Home from "./pages/Home";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-import ApplyDoctor from "./pages/ApplyDoctor";
+import ApplyMechanic from "./pages/ApplyMechanic";
 import Notifications from "./pages/Notifications";
 import Userslist from "./pages/Admin/Userslist";
-import DoctorsList from "./pages/Admin/DoctorsList";
-import Profile from "./pages/Doctor/Profile";
+import MechanicsList from "./pages/Admin/MechanicsList";
+import Profile from "./pages/Mechanic/Profile";
 import BookAppointment from "./pages/BookAppointment";
 import Appointments from "./pages/Appointments";
-import DoctorAppointments from "./pages/Doctor/DoctorAppointments";
+import MechanicAppointments from "./pages/Mechanic/MechanicAppointments";
 import VerifyEmail from "./pages/VerifyEmail";
 import ResetPassword from "./pages/ResetPassword";
 import BackgroundAnimate from "./BackgroundAnimate";
 import Carousels from "./Carousel/Carousel";
+import { NotFound } from "./NotFound";
+import MessageUs from "./pages/MessageUs";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -41,7 +43,16 @@ function App() {
           }
         />
         <Route
-          path="/ccrr"
+          path="/message"
+          element={
+            <PublicRoute>
+              <MessageUs />
+              <BackgroundAnimate />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/about-us"
           element={
             <PublicRoute>
               <Carousels />
@@ -65,6 +76,8 @@ function App() {
             </PublicRoute>
           }
         />
+        <Route path="/error:404" element={<NotFound />} />
+        <Route path="*" element={<Navigate replace to="/error:404" />} />
         <Route
           path="/resetpassword/:token"
           element={
@@ -87,7 +100,7 @@ function App() {
           path="/apply-mechanic"
           element={
             <ProtectedRoute>
-              <ApplyDoctor />
+              <ApplyMechanic />
             </ProtectedRoute>
           }
         />
@@ -112,7 +125,7 @@ function App() {
           path="/admin/mechaniclist"
           element={
             <ProtectedRoute>
-              <DoctorsList />
+              <MechanicsList />
             </ProtectedRoute>
           }
         />
@@ -127,7 +140,7 @@ function App() {
         />
 
         <Route
-          path="/book-appointment/:doctorId"
+          path="/book-appointment/:mechanicId"
           element={
             <ProtectedRoute>
               <BookAppointment />
@@ -147,7 +160,7 @@ function App() {
           path="/mechanic/appointments"
           element={
             <ProtectedRoute>
-              <DoctorAppointments />
+              <MechanicAppointments />
             </ProtectedRoute>
           }
         />
