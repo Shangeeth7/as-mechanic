@@ -52,11 +52,11 @@ module.exports = async (user, mailType, admin) => {
       mailOptions = {
         from: process.env.EMAIL,
         to: process.env.EMAIL,
-        subject: "Message from user/viewer",
+        subject: "Message from Website(get-in-touch)",
         html: emailContent,
       };
     } else {
-      emailContent = `<div><h1>Please click on the below link to reset your password</h1> <a href="http://localhost:3000/resetpassword/${encryptedToken}">${encryptedToken}</a> </div>`;
+      emailContent = `<div><h1>Please click on the below link to reset your password</h1> <a href="https://bikemechanic.herokuapp.com/resetpassword/${encryptedToken}">${encryptedToken}</a> </div>`;
 
       mailOptions = {
         from: process.env.EMAIL,

@@ -25,24 +25,24 @@ module.exports = async (user, mailType) => {
     await token.save();
     let mailOptions, emailContent;
     if (mailType === "verifyemail") {
-      emailContent = `<div><h1>Please click on the below link to verify your email address</h1> <a href="http://localhost:3000/verifyemail/${encryptedToken}">${encryptedToken}</a>  </div>`;
+      emailContent = `<div><h1>Please click on the below link to verify your email address</h1> <a href="https://bikemechanic.herokuapp.com/verifyemail/${encryptedToken}">${encryptedToken}</a>  </div>`;
 
       mailOptions = {
         from: process.env.EMAIL,
         to: user.email,
-        subject: "Verify Email For MERN Auth",
+        subject: "Verify Email | MSC Login",
         html: emailContent,
       };
     } else {
-      emailContent = `<div><h1>Hello ${user.name}</h1>
-      <p> Welcome to our Online Motorcycle Booking APPLICATION
+      emailContent = `<div><h2>Hello ${user.name}</h2>
+      <p> Welcome to Motorcycle Servicing Company
       </p>
       </div>`;
 
       mailOptions = {
         from: process.env.EMAIL,
         to: user.email,
-        subject: "Welcome to our Service",
+        subject: "Welcome to MSC | A Motorcycle Servicing Company",
         html: emailContent,
       };
     }
